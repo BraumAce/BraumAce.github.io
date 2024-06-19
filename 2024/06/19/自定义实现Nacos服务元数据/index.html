@@ -4,8 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, BraumAce&#39;s Blog">
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex">
+    <meta name="keywords" content="BraumAce&#39;s Blog">
+    <meta name="description" content="自定义实现Nacos服务元数据定义服务在 Nacos 中，服务的定义包括以下几个内容：
+
+命名空间（Namespace）：Nacos 数据模型中最顶层、也是包含范围最广的概念，用于在类似环境或租户等需要强制隔离的场景中定义。Nacos 的服">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | BraumAce&#39;s Blog</title>
+    <title>BraumAce&#39;s Blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -334,12 +336,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -375,7 +377,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2024-06-14
+                    2024-06-19
                 </div>
                 
 
@@ -396,19 +398,38 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <h1 id="自定义实现Nacos服务元数据"><a href="#自定义实现Nacos服务元数据" class="headerlink" title="自定义实现Nacos服务元数据"></a>自定义实现Nacos服务元数据</h1><h2 id="定义服务"><a href="#定义服务" class="headerlink" title="定义服务"></a>定义服务</h2><p>在 Nacos 中，服务的定义包括以下几个内容：</p>
+<ul>
+<li>命名空间（Namespace）：Nacos 数据模型中最顶层、也是包含范围最广的概念，用于在类似环境或租户等需要强制隔离的场景中定义。Nacos 的服务也需要使用命名空间来进行隔离。</li>
+<li>分组（Group）：Nacos 数据模型中次于命名空间的一种隔离概念，区别于命名空间的强制隔离属性，分组属于一个弱隔离概念，主要用于逻辑区分一些服务使用场景或不同应用的同名服务，最常用的情况主要是同一个服务的测试分组和生产分组、或者将应用名作为分组以防止不同应用提供的服务重名。</li>
+<li>服务名（Name）：该服务实际的名字，一般用于描述该服务提供了某种功能或能力。</li>
+</ul>
+<h2 id="定义服务元数据"><a href="#定义服务元数据" class="headerlink" title="定义服务元数据"></a>定义服务元数据</h2><p>服务的定义只是为服务设置了一些基本的信息，用于描述服务以及方便快速的找到服务，而服务的元数据是进一步定义了 Nacos 中服务的细节属性和描述信息。主要包含：</p>
+<ul>
+<li>健康保护阈值（ProtectThreshold）：为了防止因过多实例故障，导致所有流量全部流入剩余实例，继而造成流量压力将剩余实例被压垮形成的雪崩效应。应将健康保护阈值定义为一个 0 到 1 之间的浮点数。当域名健康实例数占总服务实例数的比例小于该值时，无论实例是否健康，都会将这个实例返回给客户端。这样做虽然损失了一部分流量，但是保证了集群中剩余健康实例能正常工作。</li>
+<li>实例选择器（Selector）：用于在获取服务下的实例列表时，过滤和筛选实例。该选择器也被称为路由器，目前Nacos支持通过将实例的部分信息存储在外部元数据管理 CMDB 中，并在发现服务时使用 CMDB 中存储的元数据标签来进行筛选的能力。</li>
+<li>拓展数据(extendData)：用于用户在注册实例时自定义扩展的元数据内容，形式为 K-V 。可以在服务中拓展服务的元数据信息，方便用户实现自己的自定义逻辑。</li>
+</ul>
+<h2 id="定义实例"><a href="#定义实例" class="headerlink" title="定义实例"></a>定义实例</h2><p>由于服务实例是具体提供服务的节点，因此 Nacos 在设计实例的定义时，主要需要存储该实例的一些网络相关的基础信息，主要包含以下内容：</p>
+<ul>
+<li>网络IP地址：该实例的 IP 地址，在 Nacos2.0 版本后支持设置为域名。</li>
+<li>网络端口：该实例的端口信息。</li>
+<li>健康状态（Healthy）：用于表示该实例是否为健康状态，会在 Nacos 中通过健康检查的手段进行维护，具体内容将在Nacos 健康检查机制章节中详细说明。</li>
+<li>集群（Cluster）：用于标示该实例归属于哪个逻辑集群，有关于集群的相关内容，将在后文详细说明。</li>
+<li>拓展数据(extendData)：用于用户自定义扩展的元数据内容，形式为K-V。可以在实例中拓展该实例的元数据信息，方便用户实现自己的自定义逻辑和标示该实例。</li>
+</ul>
+<h2 id="实例元数据"><a href="#实例元数据" class="headerlink" title="实例元数据"></a>实例元数据</h2><p>和服务元数据不同，实例的元数据主要作用于实例运维相关的数据信息。主要包含：</p>
+<ul>
+<li>权重（Weight）：实例级别的配置。权重为浮点数，范围为 0-10000。权重越大，分配给该实例的流量越大。</li>
+<li>上线状态（Enabled）：标记该实例是否接受流量，优先级大于权重和健康状态。用于运维人员在不变动实例本身的情况下，快速地手动将某个实例从服务中移除。</li>
+<li>拓展数据(extendData)：不同于实例定义中的拓展数据，这个拓展数据是给予运维人员在不变动实例本身的情况下，快速地修改和新增实例的扩展数据，从而达到运维实例的作用。</li>
+</ul>
+<blockquote>
+<p>相关链接：</p>
+<p><a target="_blank" rel="noopener" href="https://nacos.io/docs/ebook/knk2h0/">Nacos注册中心服务数据模型</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/GodSure0914/article/details/130945062">Nacos服务注册时添加元数据</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yangxiao_hui/article/details/107090628">Nacos注册中心，服务注册时加入自定义元数据</a></p>
+</blockquote>
 
                 
             </div>
@@ -435,7 +456,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://braumace.github.io/2024/06/14/hello-world/">https://braumace.github.io/2024/06/14/hello-world/</a>
+                    <a href="https://braumace.github.io/2024/06/19/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E7%8E%B0Nacos%E6%9C%8D%E5%8A%A1%E5%85%83%E6%95%B0%E6%8D%AE/">https://braumace.github.io/2024/06/19/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E7%8E%B0Nacos%E6%9C%8D%E5%8A%A1%E5%85%83%E6%95%B0%E6%8D%AE/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -549,9 +570,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2024/06/19/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%9E%E7%8E%B0Nacos%E6%9C%8D%E5%8A%A1%E5%85%83%E6%95%B0%E6%8D%AE/">
                     <div class="card-image">
@@ -569,9 +591,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-06-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-06-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -580,6 +602,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -587,7 +610,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2024/06/14/hello-world/">
@@ -617,7 +640,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
